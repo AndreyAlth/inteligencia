@@ -1,3 +1,5 @@
 /ai/*
 /whisper/__pycache__
 database.ini
+.env
+example.ogg
