@@ -1,2 +1,3 @@
 /ai/*
+/whisper/__pycache__
 database.ini
