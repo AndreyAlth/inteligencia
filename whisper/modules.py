@@ -1,5 +1,7 @@
 from whisper.src import transcribe_audio_whisper
 from whisper.services import insert_transcription
+from embeddings.modules import add_embeddings
+import asyncio
 
 def conevrt_data(segments):
     list = []
@@ -21,6 +23,6 @@ async def transcribe_audio(queue_id, audio_url):
         "text": data.text,
         "segments": conevrt_data(data.segments) 
     }
-    print(transcription)
     insert_transcription(queue_id, transcription)
+    asyncio.create_task(add_embeddings(queue_id))
     return transcription

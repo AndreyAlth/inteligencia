@@ -28,6 +28,32 @@ def insert_transcription(id: str, data):
     finally:
         return result
 
+def update_transcription(id: str, data):
+    """ Insert transcription into queue table """
+    print(data)
+    json_data = json.dumps(data)
+
+    sql = """
+        update tasks set data = %s where id = %s returning *;
+        """
+    
+    config  = load_config()
+    result = None
+    try:
+        with psycopg2.connect(**config) as conn:
+            with conn.cursor() as cur:
+                cur.execute(sql, (json_data, id))
+                rows = cur.fetchall()
+                if rows:
+                    result = rows[0]
+                    print(result)
+                conn.commit()
+
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        return result
+
 def create_queue():
     """ create queue into queue table """
 
