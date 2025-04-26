@@ -51,6 +51,24 @@ def create_queue():
         print(error) 
     finally:
         return id
+
+def get_queue(id: str):
+    """ Retrieve data from the queue table """
+
+    sql = """
+        select * from tasks where id = %s
+        """
+    
+    config  = load_config()
+    try:
+        with psycopg2.connect(**config) as conn:
+            with conn.cursor() as cur:
+                cur.execute(sql, (id,))
+                rows = cur.fetchall()
+                return rows[0]
+
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
     
 def error_queue(queue_id):
     """ error queue into queue table """

@@ -14,6 +14,6 @@ def transcribe_audio_whisper(file_path):
         model="whisper-1", 
         file=audio_file,
         response_format="verbose_json",
-        timestamp_granularities=["word"],
+        timestamp_granularities=["segment"],
     )
     return translation
