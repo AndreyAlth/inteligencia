@@ -25,4 +25,4 @@ async def transcribe_audio(queue_id, audio_url):
     }
     insert_transcription(queue_id, transcription)
     asyncio.create_task(add_embeddings_meilisearch(queue_id))
-    return transcription
+    # return transcription

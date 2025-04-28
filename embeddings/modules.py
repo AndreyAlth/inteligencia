@@ -2,6 +2,7 @@ from embeddings.src import create_embeddings
 from whisper.services import get_queue, update_transcription
 from embeddings.meilisearch import create_index
 import uuid
+import json
 
 async def add_embeddings(id):
     """
@@ -32,20 +33,26 @@ async def add_embeddings_meilisearch(id):
     Function to add embeddings to the database.
     """
     transcription = get_queue(id)
+    print(transcription)
 
     if (not transcription):
         return {"message": "No se encontro la transcripcion"}
-
+    
     list = []
-    for segment in transcription.data.segments:
-        transcription = {
-            "id": uuid.uuid4(),
-            "transcription_id": transcription.id,
-            "title": "Transcription {transcription.id}",
-            "start": segment.start,
-            "end": segment.end,
-            "text": segment.text,
+
+    for segment in transcription[1]['segments']:
+        transcription_data = {
+            "id": str(uuid.uuid4()),
+            "transcription_id": transcription[0],
+            "title": "Transcription {transcription[0]}",
+            "start": segment['start'],
+            "end": segment['end'],
+            "text": segment['text'],
         }
-        await create_index(transcription, 'transcriptions')
+        list.append(transcription_data)
+    print(list)
+    with open('datos.json', 'w', encoding='utf-8') as archivo:
+        json.dump(list, archivo, ensure_ascii=False, indent=2)
+    await create_index('datos.json', 'transcriptions')
     
     

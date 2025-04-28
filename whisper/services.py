@@ -4,7 +4,6 @@ import json
 
 def insert_transcription(id: str, data):
     """ Insert transcription into queue table """
-    print(data)
     json_data = json.dumps(data)
 
     sql = """
@@ -20,7 +19,6 @@ def insert_transcription(id: str, data):
                 rows = cur.fetchall()
                 if rows:
                     result = rows[0]
-                    print(result)
                 conn.commit()
 
     except (Exception, psycopg2.DatabaseError) as error:
@@ -30,7 +28,6 @@ def insert_transcription(id: str, data):
 
 def update_transcription(id: str, data):
     """ Insert transcription into queue table """
-    print(data)
     json_data = json.dumps(data)
 
     sql = """
@@ -46,7 +43,6 @@ def update_transcription(id: str, data):
                 rows = cur.fetchall()
                 if rows:
                     result = rows[0]
-                    print(result)
                 conn.commit()
 
     except (Exception, psycopg2.DatabaseError) as error:
@@ -68,7 +64,6 @@ def create_queue():
             with conn.cursor() as cur:
                 cur.execute(sql)
                 rows = cur.fetchall()
-                print(rows)
                 if rows:
                     id = rows[0]
                 conn.commit()
@@ -110,7 +105,6 @@ def error_queue(queue_id):
             with conn.cursor() as cur:
                 cur.execute(sql, (queue_id))
                 rows = cur.fetchall()
-                print(rows)
                 if rows:
                     id = rows[0]
                 conn.commit()

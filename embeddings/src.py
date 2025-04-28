@@ -13,4 +13,3 @@ def create_embeddings(data: str):
     return translation
 
 st = create_embeddings("hla")
-print(st.data[0].embedding)
