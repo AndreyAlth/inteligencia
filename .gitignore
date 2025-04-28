@@ -3,3 +3,4 @@
 database.ini
 .env
 example.ogg
+/__pycache__/*
