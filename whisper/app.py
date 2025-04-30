@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from fastapi import Request, Response
-from whisper.services import create_queue, error_queue, get_queue
+from whisper.services import create_queue, error_queue, get_queue, get_queues
 from whisper.modules import transcribe_audio
 import asyncio
 
@@ -10,8 +10,13 @@ router = APIRouter(
     responses={404: {"description": "No encontrado"}},
 )
 
+@router.get("/")
+async def get_transcriptions():
+    trascriptions = get_queues()
+    return trascriptions
+
 @router.get("/{id}")
-async def read_users(id: str):
+async def get_transcription(id: str):
     if (not id):
         return {"message": "No se encontro la transcripcion"}
     

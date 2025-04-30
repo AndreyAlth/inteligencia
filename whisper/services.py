@@ -2,6 +2,16 @@ import psycopg2
 from config import load_config
 import json
 
+def json_serial(obj):
+    """Función personalizada para serializar tipos no soportados por defecto en JSON"""
+    if isinstance(obj, (datetime.datetime, datetime.date, datetime.time)):
+        return obj.isoformat()
+    elif isinstance(obj, decimal.Decimal):
+        return float(obj)
+    elif isinstance(obj, bytes):
+        return obj.decode('utf-8')
+    raise TypeError(f"Tipo no serializable: {type(obj)}")
+
 def insert_transcription(id: str, data):
     """ Insert transcription into queue table """
     json_data = json.dumps(data)
@@ -72,6 +82,24 @@ def create_queue():
         print(error) 
     finally:
         return id
+    
+def get_queues():
+    """ Retrieve data from the queue table """
+
+    sql = """
+        select * from tasks
+        """
+    
+    config  = load_config()
+    try:
+        with psycopg2.connect(**config) as conn:
+            with conn.cursor() as cur:
+                cur.execute(sql, (id,))
+                rows = cur.fetchall()
+                return rows
+
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
 
 def get_queue(id: str):
     """ Retrieve data from the queue table """

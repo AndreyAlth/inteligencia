@@ -50,7 +50,6 @@ async def add_embeddings_meilisearch(id):
             "text": segment['text'],
         }
         list.append(transcription_data)
-    print(list)
     with open('datos.json', 'w', encoding='utf-8') as archivo:
         json.dump(list, archivo, ensure_ascii=False, indent=2)
     await create_index('datos.json', 'transcriptions')
