@@ -2,16 +2,6 @@ import psycopg2
 from config import load_config
 import json
 
-def json_serial(obj):
-    """Función personalizada para serializar tipos no soportados por defecto en JSON"""
-    if isinstance(obj, (datetime.datetime, datetime.date, datetime.time)):
-        return obj.isoformat()
-    elif isinstance(obj, decimal.Decimal):
-        return float(obj)
-    elif isinstance(obj, bytes):
-        return obj.decode('utf-8')
-    raise TypeError(f"Tipo no serializable: {type(obj)}")
-
 def insert_transcription(id: str, data):
     """ Insert transcription into queue table """
     json_data = json.dumps(data)

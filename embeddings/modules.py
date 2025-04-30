@@ -28,12 +28,11 @@ async def add_embeddings(id):
     update_transcription(transcription.id, transcription)
     return list
 
-async def add_embeddings_meilisearch(id):
+async def add_documents_meilisearch(id):
     """
     Function to add embeddings to the database.
     """
     transcription = get_queue(id)
-    print(transcription)
 
     if (not transcription):
         return {"message": "No se encontro la transcripcion"}
@@ -43,8 +42,8 @@ async def add_embeddings_meilisearch(id):
     for segment in transcription[1]['segments']:
         transcription_data = {
             "id": str(uuid.uuid4()),
-            "transcription_id": transcription[0],
-            "title": "Transcription {transcription[0]}",
+            "id_transcription": transcription[0],
+            "title": f"Transcription {transcription[0]}",
             "start": segment['start'],
             "end": segment['end'],
             "text": segment['text'],
